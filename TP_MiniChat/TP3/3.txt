@@ -1,0 +1,46 @@
+
+
+<html>
+
+
+<body>
+    <?php
+    include("constants.php");
+
+    function dbConnect(){
+        $dsn = "pgsql:dbname=".DB_NAME; "host= ".DB_SERVER;"port=".DB_PORT;
+        $user = DB_USER;
+        $password = DB_PASSWORD;
+
+        try {
+            $conn = new PDO($dsn, $user, $password);
+            //$con = new PDO('psql:'.DB_NAME.';'.DB_SERVER. ';'.DB_PORT,DP_PASSWORD);
+            return $conn ; 
+            } catch (PDOException $e) {
+            echo 'Connexion échouée : ' . $e->getMessage();
+            return false ;
+        }
+        
+    }
+
+    function dbGetChannels($conn){
+        $channels = $conn->query('SELECT * FROM channels');//nouveau objet PDO pour faire une requète dans la BDD 
+        if ($channels!=0){//vérification de connexion 
+            $result = $channels->fetchAll();// afficher tout 
+            echo "<a href=\"chat.php?request=$result\"> </a>";//envoie des données 
+            return $result;          //return la résultat à afficher   
+        }else{
+            return 0; 
+        }
+    }
+
+    ?>
+
+
+
+    </body>
+
+
+
+
+</html>
